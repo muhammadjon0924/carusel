@@ -1,0 +1,993 @@
+/* ==========================================================================
+   Zamonaviy va Premium Karusel (Slider) Stili
+   ========================================================================== */
+
+:root {
+  --primary-color: #6366f1;
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --accent-color: #38bdf8;
+  --bg-color: #0b0f19;
+  --card-bg: rgba(17, 24, 39, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --transition-speed: 0.75s;
+  --transition-easing: cubic-bezier(0.25, 1, 0.5, 1);
+  --radius-lg: 24px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Fon effekti - orqa yorug'lik nurlari */
+.background-glow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, rgba(168, 85, 247, 0.12) 40%, transparent 70%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+  transition: background 1s ease;
+}
+
+/* Sarlavha qismi */
+.app-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 24px;
+  max-width: 700px;
+}
+
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.app-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 70%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.app-subtitle {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Asosiy Karusel Konteyneri */
+.carousel-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  aspect-ratio: 16 / 9;
+  min-height: 480px;
+  max-height: 640px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7),
+              0 0 0 1px var(--glass-border);
+  background: #000;
+  user-select: none;
+  cursor: grab;
+  transition: box-shadow 0.3s ease;
+}
+
+.carousel-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Slaydlar konteyneri */
+.carousel-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+/* Har bir slayd */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transform-origin: center center;
+  transition: opacity 0.75s cubic-bezier(0.2, 0.9, 0.3, 1),
+              visibility 0.75s;
+}
+
+/* Chiqib ketayotgan slayd umumiy holati */
+.slide.anim-exit {
+  opacity: 0 !important;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   1-ANIMATSIYA TURI: Vertikal Zoom & Ken Burns (Kattalashib fokuslanish)
+   -------------------------------------------------------------------------- */
+.slide.anim-zoom.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  animation: slideZoomInVert 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide.anim-zoom.active .slide-image {
+  animation: kenBurnsZoom 7s ease-out infinite alternate;
+}
+
+.slide.anim-zoom.anim-exit {
+  animation: slideZoomOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideZoomInVert {
+  from {
+    opacity: 0;
+    transform: translateY(80px) scale(1.15);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideZoomOutVert {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.92);
+    filter: blur(6px);
+  }
+}
+
+@keyframes kenBurnsZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
+/* --------------------------------------------------------------------------
+   2-ANIMATSIYA TURI: Vertikal 3D Parallax Slide (Pastdan 3D siljib kirish)
+   -------------------------------------------------------------------------- */
+.slide.anim-parallax.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  animation: slideParallaxInVert 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.slide.anim-parallax.active .slide-image {
+  animation: parallaxPanVert 8s ease-in-out infinite alternate;
+}
+
+.slide.anim-parallax.anim-exit {
+  animation: slideParallaxOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideParallaxInVert {
+  from {
+    opacity: 0;
+    transform: translateY(110px) rotateX(-16deg) scale(0.93);
+    filter: brightness(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes slideParallaxOutVert {
+  from {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-110px) rotateX(16deg) scale(0.93);
+  }
+}
+
+@keyframes parallaxPanVert {
+  0% { transform: scale(1.05) translateY(0); }
+  100% { transform: scale(1.08) translateY(-15px); }
+}
+
+/* --------------------------------------------------------------------------
+   3-ANIMATSIYA TURI: Vertikal 3D Flip (Kubik X-o'qi burilishi)
+   -------------------------------------------------------------------------- */
+.slide.anim-flip.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  animation: slideFlipInVert 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.slide.anim-flip.active .slide-image {
+  animation: flipFloat 7s ease-in-out infinite alternate;
+}
+
+.slide.anim-flip.anim-exit {
+  animation: slideFlipOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideFlipInVert {
+  from {
+    opacity: 0;
+    transform: rotateX(50deg) scale(0.86) translateZ(-80px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1) translateZ(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideFlipOutVert {
+  from {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotateX(-50deg) scale(0.86) translateZ(-80px);
+    filter: blur(6px);
+  }
+}
+
+@keyframes flipFloat {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.07); }
+}
+
+/* --------------------------------------------------------------------------
+   4-ANIMATSIYA TURI: Vertikal Parda (Pastdan yuqoriga pardasimon ochilish)
+   -------------------------------------------------------------------------- */
+.slide.anim-curtain.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  animation: slideCurtainInVert 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.slide.anim-curtain.active .slide-image {
+  animation: curtainZoom 7s ease-in-out infinite alternate;
+}
+
+.slide.anim-curtain.anim-exit {
+  animation: slideCurtainOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideCurtainInVert {
+  from {
+    opacity: 0;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    transform: translateY(60px) scale(1.04);
+  }
+  to {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideCurtainOutVert {
+  from {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 0%, 0% 0%);
+    transform: translateY(-60px);
+  }
+}
+
+@keyframes curtainZoom {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.09); }
+}
+
+/* --------------------------------------------------------------------------
+   5-ANIMATSIYA TURI: Vertikal Split & Expand (Markazdan vertikal ochilish)
+   -------------------------------------------------------------------------- */
+.slide.anim-expand.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  animation: slideExpandInVert 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.slide.anim-expand.active .slide-image {
+  animation: expandPan 7s ease-in-out infinite alternate;
+}
+
+.slide.anim-expand.anim-exit {
+  animation: slideExpandOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideExpandInVert {
+  from {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+    transform: translateY(40px) scale(1.08);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0% 0 0% 0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideExpandOutVert {
+  from {
+    opacity: 1;
+    clip-path: inset(0% 0 0% 0);
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+    transform: translateY(-40px) scale(0.92);
+  }
+}
+
+@keyframes expandPan {
+  0% { transform: scale(1.04) translateY(0); }
+  100% { transform: scale(1.09) translateY(-10px); }
+}
+
+/* Slayd rasmi */
+.slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+}
+
+/* Qorong'ilash gradienti */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 15, 25, 0.15) 0%,
+    rgba(11, 15, 25, 0.4) 40%,
+    rgba(11, 15, 25, 0.92) 100%
+  );
+  z-index: 1;
+}
+
+/* Slayd ma'lumotlari (kontent) */
+.slide-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 680px;
+}
+
+.slide-tag {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 5px 14px;
+  background: var(--primary-gradient);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s var(--transition-easing) 0.15s;
+}
+
+.slide-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.6s var(--transition-easing) 0.25s;
+}
+
+.slide-description {
+  font-size: 1rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.6s var(--transition-easing) 0.35s;
+}
+
+.slide-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.6s var(--transition-easing) 0.45s;
+}
+
+.slide.active .slide-tag,
+.slide.active .slide-title,
+.slide.active .slide-description,
+.slide.active .slide-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Har bir animatsiya turi uchun sarlavha va matnning o'zgacha ochilishi
+   -------------------------------------------------------------------------- */
+/* 1. Zoom matn animatsiyasi (Kattalashib ochilish) */
+.slide.anim-zoom.active .slide-title {
+  animation: textZoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+@keyframes textZoomIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+/* 2. Parallax matn animatsiyasi (Chapdan tez surilish) */
+.slide.anim-parallax.active .slide-title {
+  animation: textSlideLeft 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) 0.2s both;
+}
+@keyframes textSlideLeft {
+  from { opacity: 0; transform: translateX(-60px) skewX(4deg); }
+  to { opacity: 1; transform: translateX(0) skewX(0); }
+}
+
+/* 3. 3D Flip matn animatsiyasi (3D burchak bilan burilish) */
+.slide.anim-flip.active .slide-title {
+  animation: textFlipIn 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+}
+@keyframes textFlipIn {
+  from { opacity: 0; transform: perspective(400px) rotateX(60deg) translateY(30px); }
+  to { opacity: 1; transform: perspective(400px) rotateX(0deg) translateY(0); }
+}
+
+/* 4. Curtain matn animatsiyasi (Parda ortidan ko'tarilish) */
+.slide.anim-curtain.active .slide-title {
+  animation: textCurtainUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.2s both;
+}
+@keyframes textCurtainUp {
+  from { opacity: 0; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); transform: translateY(40px); }
+  to { opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); transform: translateY(0); }
+}
+
+/* 5. Expand matn animatsiyasi (Yumshoq kattalashib chiqish) */
+.slide.anim-expand.active .slide-title {
+  animation: textPopExpand 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+@keyframes textPopExpand {
+  from { opacity: 0; transform: scale(0.85) translateY(15px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: #f1f5f9;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Vertikal navigatsiya boshqaruv paneli (Tepaga / Pastga va vertikal nuqtalar) */
+.vertical-nav-panel {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 6px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  z-index: 10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-btn:hover {
+  background: var(--primary-gradient);
+  border-color: transparent;
+  transform: scale(1.15);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+}
+
+.nav-btn:active {
+  transform: scale(0.94);
+}
+
+.nav-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2.5;
+}
+
+/* Yuqori panel: Slayd hisoblagich & boshqaruv tugmalari */
+.carousel-top-bar {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.slide-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.slide-counter .current {
+  color: #38bdf8;
+}
+
+.slide-counter .divider {
+  color: var(--text-muted);
+}
+
+.slide-counter .total {
+  color: var(--text-muted);
+}
+
+.carousel-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tool-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tool-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+.tool-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Sichqoncha slayd ustida turgandagi status nishoni (Hover Pause Indicator) */
+.hover-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #38bdf8;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.92);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* Slayd ustiga sichqoncha borganda nishon faollashadi */
+.carousel-wrapper:hover .hover-status-badge,
+.hover-status-badge.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Animatsiya turi ko'rsatkichi nishoni */
+.anim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #c084fc;
+  letter-spacing: 0.5px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.2);
+}
+
+.anim-badge svg {
+  width: 14px;
+  height: 14px;
+  stroke: #c084fc;
+}
+
+.anim-badge.pop {
+  animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Sichqoncha kelganda progress bar pauza holati */
+.carousel-wrapper:hover .progress-bar {
+  filter: brightness(1.25);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.9);
+}
+
+/* Vertikal indikator nuqtalari */
+.carousel-indicators {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  z-index: 10;
+}
+
+.indicator-dot {
+  position: relative;
+  width: 8px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.indicator-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.indicator-dot.active {
+  width: 8px;
+  height: 28px;
+  background: var(--primary-gradient);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+}
+
+/* Avtomatik vaqt progress chizig'i */
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--primary-gradient);
+  transition: width 0.05s linear;
+}
+
+/* Mini rasmlar (Thumbnails) qatori */
+.thumbnails-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.thumbnail-card {
+  width: 80px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.55;
+}
+
+.thumbnail-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-card:hover {
+  opacity: 0.9;
+  transform: translateY(-3px);
+}
+
+.thumbnail-card.active {
+  opacity: 1;
+  border-color: #6366f1;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+}
+
+/* Klaviatura qisqa buyruqlari haqida yo'riqnoma */
+.shortcuts-hint {
+  position: relative;
+  z-index: 2;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.shortcut-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kbd {
+  padding: 3px 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Moslashuvchanlik (Responsive) */
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    aspect-ratio: auto;
+    height: 480px;
+    border-radius: 18px;
+  }
+
+  .slide-content {
+    padding: 24px;
+    max-width: 100%;
+  }
+
+  .nav-btn {
+    width: 42px;
+    height: 42px;
+    max-width: calc(100% - 70px);
+  }
+
+  .vertical-nav-panel {
+    right: 12px;
+    gap: 8px;
+    padding: 6px 4px;
+  }
+
+  .nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .carousel-top-bar {
+    top: 14px;
+    left: 14px;
+    right: 14px;
+  }
+
+  .thumbnail-card {
+    width: 60px;
+    height: 40px;
+  }
+
+  .shortcuts-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-wrapper {
+    height: 440px;
+  }
+
+  .slide-title {
+    font-size: 1.4rem;
+  }
+
+  .slide-description {
+    font-size: 0.88rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .slide-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+}
