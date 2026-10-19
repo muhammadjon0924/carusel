@@ -153,13 +153,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   1-ANIMATSIYA TURI: Vertikal Zoom & Ken Burns (Kattalashib fokuslanish)
+   1-ANIMATSIYA TURI: Zoom & Ken Burns (Kattalashib fokuslanish)
    -------------------------------------------------------------------------- */
 .slide.anim-zoom.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  animation: slideZoomInVert 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideZoomIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .slide.anim-zoom.active .slide-image {
@@ -167,31 +167,31 @@ body {
 }
 
 .slide.anim-zoom.anim-exit {
-  animation: slideZoomOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideZoomOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideZoomInVert {
+@keyframes slideZoomIn {
   from {
     opacity: 0;
-    transform: translateY(80px) scale(1.15);
+    transform: scale(1.18);
     filter: blur(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     filter: blur(0);
   }
 }
 
-@keyframes slideZoomOutVert {
+@keyframes slideZoomOut {
   from {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     filter: blur(0);
   }
   to {
     opacity: 0;
-    transform: translateY(-80px) scale(0.92);
+    transform: scale(0.92);
     filter: blur(6px);
   }
 }
@@ -202,60 +202,60 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   2-ANIMATSIYA TURI: Vertikal 3D Parallax Slide (Pastdan 3D siljib kirish)
+   2-ANIMATSIYA TURI: 3D Parallax Slide (Yon tomondan 3D siljib kirish)
    -------------------------------------------------------------------------- */
 .slide.anim-parallax.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  animation: slideParallaxInVert 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: slideParallaxIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .slide.anim-parallax.active .slide-image {
-  animation: parallaxPanVert 8s ease-in-out infinite alternate;
+  animation: parallaxPan 8s ease-in-out infinite alternate;
 }
 
 .slide.anim-parallax.anim-exit {
-  animation: slideParallaxOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideParallaxOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideParallaxInVert {
+@keyframes slideParallaxIn {
   from {
     opacity: 0;
-    transform: translateY(110px) rotateX(-16deg) scale(0.93);
+    transform: translateX(90px) rotateY(-8deg) scale(0.94);
     filter: brightness(0.7);
   }
   to {
     opacity: 1;
-    transform: translateY(0) rotateX(0deg) scale(1);
+    transform: translateX(0) rotateY(0deg) scale(1);
     filter: brightness(1);
   }
 }
 
-@keyframes slideParallaxOutVert {
+@keyframes slideParallaxOut {
   from {
     opacity: 1;
-    transform: translateY(0) rotateX(0deg) scale(1);
+    transform: translateX(0) rotateY(0deg) scale(1);
   }
   to {
     opacity: 0;
-    transform: translateY(-110px) rotateX(16deg) scale(0.93);
+    transform: translateX(-90px) rotateY(8deg) scale(0.94);
   }
 }
 
-@keyframes parallaxPanVert {
-  0% { transform: scale(1.05) translateY(0); }
-  100% { transform: scale(1.08) translateY(-15px); }
+@keyframes parallaxPan {
+  0% { transform: scale(1.05) translateX(0); }
+  100% { transform: scale(1.08) translateX(-15px); }
 }
 
 /* --------------------------------------------------------------------------
-   3-ANIMATSIYA TURI: Vertikal 3D Flip (Kubik X-o'qi burilishi)
+   3-ANIMATSIYA TURI: 3D Flip (Kubik burilish effekti)
    -------------------------------------------------------------------------- */
 .slide.anim-flip.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  animation: slideFlipInVert 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: slideFlipIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .slide.anim-flip.active .slide-image {
@@ -263,30 +263,30 @@ body {
 }
 
 .slide.anim-flip.anim-exit {
-  animation: slideFlipOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideFlipOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideFlipInVert {
+@keyframes slideFlipIn {
   from {
     opacity: 0;
-    transform: rotateX(50deg) scale(0.86) translateZ(-80px);
+    transform: rotateX(25deg) rotateY(-20deg) scale(0.88) translateZ(-80px);
     filter: blur(6px);
   }
   to {
     opacity: 1;
-    transform: rotateX(0deg) scale(1) translateZ(0);
+    transform: rotateX(0deg) rotateY(0deg) scale(1) translateZ(0);
     filter: blur(0);
   }
 }
 
-@keyframes slideFlipOutVert {
+@keyframes slideFlipOut {
   from {
     opacity: 1;
-    transform: rotateX(0deg) scale(1);
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
   }
   to {
     opacity: 0;
-    transform: rotateX(-50deg) scale(0.86) translateZ(-80px);
+    transform: rotateX(-20deg) rotateY(20deg) scale(0.88) translateZ(-80px);
     filter: blur(6px);
   }
 }
@@ -297,13 +297,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   4-ANIMATSIYA TURI: Vertikal Parda (Pastdan yuqoriga pardasimon ochilish)
+   4-ANIMATSIYA TURI: Curtain Reveal (Parda kabi vertikal ochilish)
    -------------------------------------------------------------------------- */
 .slide.anim-curtain.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  animation: slideCurtainInVert 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: slideCurtainIn 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .slide.anim-curtain.active .slide-image {
@@ -311,14 +311,14 @@ body {
 }
 
 .slide.anim-curtain.anim-exit {
-  animation: slideCurtainOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideCurtainOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideCurtainInVert {
+@keyframes slideCurtainIn {
   from {
     opacity: 0;
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
-    transform: translateY(60px) scale(1.04);
+    transform: translateY(40px) scale(1.06);
   }
   to {
     opacity: 1;
@@ -327,7 +327,7 @@ body {
   }
 }
 
-@keyframes slideCurtainOutVert {
+@keyframes slideCurtainOut {
   from {
     opacity: 1;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
@@ -336,7 +336,7 @@ body {
   to {
     opacity: 0;
     clip-path: polygon(0 0, 100% 0, 100% 0%, 0% 0%);
-    transform: translateY(-60px);
+    transform: translateY(-40px);
   }
 }
 
@@ -346,13 +346,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   5-ANIMATSIYA TURI: Vertikal Split & Expand (Markazdan vertikal ochilish)
+   5-ANIMATSIYA TURI: Circle Mask & Expand (Markazdan doiraviy kengayib chiqish)
    -------------------------------------------------------------------------- */
 .slide.anim-expand.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
-  animation: slideExpandInVert 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation: slideCircleIn 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
 .slide.anim-expand.active .slide-image {
@@ -360,32 +360,32 @@ body {
 }
 
 .slide.anim-expand.anim-exit {
-  animation: slideExpandOutVert 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: slideCircleOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideExpandInVert {
+@keyframes slideCircleIn {
   from {
     opacity: 0;
-    clip-path: inset(50% 0 50% 0);
-    transform: translateY(40px) scale(1.08);
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(1.12);
   }
   to {
     opacity: 1;
-    clip-path: inset(0% 0 0% 0);
-    transform: translateY(0) scale(1);
+    clip-path: circle(150% at 50% 50%);
+    transform: scale(1);
   }
 }
 
-@keyframes slideExpandOutVert {
+@keyframes slideCircleOut {
   from {
     opacity: 1;
-    clip-path: inset(0% 0 0% 0);
+    clip-path: circle(150% at 50% 50%);
     transform: scale(1);
   }
   to {
     opacity: 0;
-    clip-path: inset(50% 0 50% 0);
-    transform: translateY(-40px) scale(0.92);
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(0.92);
   }
 }
 
@@ -582,53 +582,49 @@ body {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Vertikal navigatsiya boshqaruv paneli (Tepaga / Pastga va vertikal nuqtalar) */
-.vertical-nav-panel {
+/* Navigatsiya tugmalari (Oldingi / Keyingi) */
+.nav-btn {
   position: absolute;
   top: 50%;
-  right: 24px;
   transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 6px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
   background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 999px;
-  z-index: 10;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-}
-
-.nav-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 10;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .nav-btn:hover {
   background: var(--primary-gradient);
   border-color: transparent;
-  transform: scale(1.15);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5);
 }
 
 .nav-btn:active {
-  transform: scale(0.94);
+  transform: translateY(-50%) scale(0.96);
+}
+
+.nav-btn.prev {
+  left: 24px;
+}
+
+.nav-btn.next {
+  right: 24px;
 }
 
 .nav-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   stroke-width: 2.5;
 }
 
@@ -784,20 +780,21 @@ body {
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.9);
 }
 
-/* Vertikal indikator nuqtalari */
+/* Pastki indikator nuqtalari */
 .carousel-indicators {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 4px 0;
   z-index: 10;
 }
 
 .indicator-dot {
   position: relative;
-  width: 8px;
-  height: 12px;
+  width: 12px;
+  height: 8px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.35);
   border: none;
@@ -807,14 +804,13 @@ body {
 }
 
 .indicator-dot:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .indicator-dot.active {
-  width: 8px;
-  height: 28px;
+  width: 32px;
   background: var(--primary-gradient);
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.7);
 }
 
 /* Avtomatik vaqt progress chizig'i */
@@ -927,29 +923,25 @@ body {
   .nav-btn {
     width: 42px;
     height: 42px;
-    max-width: calc(100% - 70px);
   }
 
-  .vertical-nav-panel {
+  .nav-btn.prev {
+    left: 12px;
+  }
+
+  .nav-btn.next {
     right: 12px;
-    gap: 8px;
-    padding: 6px 4px;
-  }
-
-  .nav-btn {
-    width: 38px;
-    height: 38px;
-  }
-
-  .nav-btn svg {
-    width: 18px;
-    height: 18px;
   }
 
   .carousel-top-bar {
     top: 14px;
     left: 14px;
     right: 14px;
+  }
+
+  .carousel-indicators {
+    bottom: 16px;
+    right: 16px;
   }
 
   .thumbnail-card {
